@@ -1,12 +1,11 @@
-
 {% extends 'base.html' %}
 {% block head %}<title>Foodie Helpdesk</title>
 {% for message in get_flashed_messages() %}
-    <div class="alert alert-warning">
-        <script type="text/javascript">
-			alert('{{ message }}');
-		</script>
-    </div>
+<div class="alert alert-warning">
+    <script type="text/javascript">
+        alert('{{ message }}');
+    </script>
+</div>
 {% endfor %}
 {% endblock %}
 
@@ -14,58 +13,58 @@
 
 
 <header>
-<!-- Main Top Menu -->
+    <!-- Main Top Menu -->
     <nav>
         <div class="menu">
-                <a id="logo-box" href="{{ url_for('list_main_page') }}">
-                <img class="menu__logo" alt="Foodie Helpdesk Logo" src="{{ url_for('static', filename='Pictures/chefer-1.png') }}">
-                        </a>
+            <a href="{{ url_for('list_main_page') }}" id="logo-box">
+                <img alt="Foodie Helpdesk Logo" class="menu__logo"
+                     src="{{ url_for('static', filename='Pictures/chefer-1.png') }}">
+            </a>
 
             {% if logged %}
-                <ul>
-                    <li><a  href="{{ url_for('list_main_page') }}">Home</a></li>
-                    <li><a  href="{{ url_for('display_all_tags') }}">All tags</a></li>
-                    <li><a  href="/users">Users</a></li>
-                    <li><a  href="/user/{{user_id}}">My profile</a></li>
-                    <li><a  href="/logout">Logout</a></li>
-                </ul>
+            <ul>
+                <li><a href="{{ url_for('list_main_page') }}">Home</a></li>
+                <li><a href="{{ url_for('display_all_tags') }}">All tags</a></li>
+                <li><a href="/users">Users</a></li>
+                <li><a href="/user/{{user_id}}">My profile</a></li>
+                <li><a href="/logout">Logout</a></li>
+            </ul>
 
             {% else %}
-                <ul>
-                    <li><a  href="{{ url_for('list_main_page') }}">Home</a></li>
-                    <li><a  href="{{ url_for('display_all_tags') }}">All tags</a></li>
-                    <li><a  href="/users">Users</a></li>
-                    <li><a  class="active" href="/login">Login</a></li>
-                    <li><a  href="/register">Register</a></li>
-                </ul>
+            <ul>
+                <li><a href="{{ url_for('list_main_page') }}">Home</a></li>
+                <li><a href="{{ url_for('display_all_tags') }}">All tags</a></li>
+                <li><a href="/users">Users</a></li>
+                <li><a class="active" href="/login">Login</a></li>
+                <li><a href="/register">Register</a></li>
+            </ul>
             {% endif %}
 
         </div>
     </nav>
-  </header>
+</header>
 <div>
     <div class="wrapp-around">
         <div class="yellow">
             <h2 class="yellow-header"> Login </h2>
             <div class="box">
                 <form action="/login" method="post">
-            <p>{{message}}</p>
-            <h4>Username</h4>
-            <input type="text" placeholder="Enter Username" name="user_name" required>
-            <h4>Password</h4>
-            <input type="password" placeholder="Enter Password" name="password" required>
-            <br>
-            <br>
-            <input type="submit"  value="Login" class="html-text-box">
+                    <p>{{message}}</p>
+                    <h4>Username</h4>
+                    <input name="user_name" placeholder="Enter Username" required type="text">
+                    <h4>Password</h4>
+                    <input name="password" placeholder="Enter Password" required type="password">
+                    <br>
+                    <br>
+                    <input class="html-text-box" type="submit" value="Login">
 
-            <input type="reset" class="html-text-box" value="Reset">
+                    <input class="html-text-box" type="reset" value="Reset">
 
 
-
-    </form>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
-    </div>
-		</div>
-    </div>
 
 {% endblock %}

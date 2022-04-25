@@ -1,44 +1,43 @@
 {% extends 'base.html' %}
 
 
-
- {% block head %}
-     <title>Foodie Helpdesk - Bonus questions</title>
-        <script type="text/javascript" src="{{ url_for('static', filename='js/bonusQuestions.js') }}" defer></script>
-        <script type="text/javascript" src="{{ url_for('static', filename='js/doNotModifyThisFile.js') }}" defer></script>
+{% block head %}
+<title>Foodie Helpdesk - Bonus questions</title>
+<script defer src="{{ url_for('static', filename='js/bonusQuestions.js') }}" type="text/javascript"></script>
+<script defer src="{{ url_for('static', filename='js/doNotModifyThisFile.js') }}" type="text/javascript"></script>
 {% endblock %}
-   {% block body %}
+{% block body %}
 
 
-        <h1>AskMate</h1>
-        <h2>All Questions:</h2>
-        <button id="theme-button">Change Theme to Dark</button>
-        <button id="increase-font-button">Increase page font</button>
-        <button id="decrease-font-button">Decrease page font</button>
-        <button id="restore-font-button">Restore default page font</button>
-        <input
-                data-table-body="doNotModifyThisId_QuestionsTableBody"
-                style="width: 500px" id="doNotModifyThisId_QuestionsFilter"
-                type="text"
-                placeholder="filter questions by keywords">
-        <table id="bonusQuestionsTable">
-            <thead id="doNotModifyThisId_QuestionsTableHeader">
-                <tr>
-                    <td>Title</td>
-                    <td>Description</td>
-                    <td>Vote Count</td>
-                    <td>View Number</td>
-                </tr>
-            </thead>
-            <tbody id="doNotModifyThisId_QuestionsTableBody">
-                {% for question in questions %}
-                    <tr>
-                        <td>{{ question['title'] }}</td>
-                        <td>{{ question['description'] }}</td>
-                        <td>{{ question['vote_number'] }}</td>
-                        <td>{{ question['view_number'] }}</td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+<h1>AskMate</h1>
+<h2>All Questions:</h2>
+<button id="theme-button">Change Theme to Dark</button>
+<button id="increase-font-button">Increase page font</button>
+<button id="decrease-font-button">Decrease page font</button>
+<button id="restore-font-button">Restore default page font</button>
+<input
+        data-table-body="doNotModifyThisId_QuestionsTableBody"
+        id="doNotModifyThisId_QuestionsFilter" placeholder="filter questions by keywords"
+        style="width: 500px"
+        type="text">
+<table id="bonusQuestionsTable">
+    <thead id="doNotModifyThisId_QuestionsTableHeader">
+    <tr>
+        <td>Title</td>
+        <td>Description</td>
+        <td>Vote Count</td>
+        <td>View Number</td>
+    </tr>
+    </thead>
+    <tbody id="doNotModifyThisId_QuestionsTableBody">
+    {% for question in questions %}
+    <tr>
+        <td>{{ question['title'] }}</td>
+        <td>{{ question['description'] }}</td>
+        <td>{{ question['vote_number'] }}</td>
+        <td>{{ question['view_number'] }}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
 {% endblock %}

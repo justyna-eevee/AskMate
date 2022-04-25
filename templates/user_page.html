@@ -1,12 +1,11 @@
-
 {% extends 'base.html' %}
 {% block head %}<title>Foodie Helpdesk</title>
 {% for message in get_flashed_messages() %}
-    <div class="alert alert-warning">
-        <script type="text/javascript">
-			alert('{{ message }}');
-		</script>
-    </div>
+<div class="alert alert-warning">
+    <script type="text/javascript">
+        alert('{{ message }}');
+    </script>
+</div>
 {% endfor %}
 {% endblock %}
 
@@ -14,144 +13,153 @@
 
 
 <header>
-<!-- Main Top Menu -->
+    <!-- Main Top Menu -->
     <nav>
         <div class="menu">
-                <a id="logo-box" href="{{ url_for('list_main_page') }}">
-                <img class="menu__logo" alt="Foodie Helpdesk Logo" src="{{ url_for('static', filename='Pictures/chefer-1.png') }}">
-                        </a>
+            <a href="{{ url_for('list_main_page') }}" id="logo-box">
+                <img alt="Foodie Helpdesk Logo" class="menu__logo"
+                     src="{{ url_for('static', filename='Pictures/chefer-1.png') }}">
+            </a>
 
             {% if session.get("user_id") %}
-                <ul>
-                    <li><a  href="{{ url_for('list_main_page') }}">Home</a></li>
-                    <li><a  href="{{ url_for('display_all_tags') }}">All tags</a></li>
-                    {% if user_id == user_data['id'] %}
-                        <li><a  href="/users">Users</a></li>
-                        <li><a  class="active" href="/user/{{user_id}}">My profile</a></li>
-                    {% else %}
-                        <li><a  class="active" href="/users">Users</a></li>
-                        <li><a  href="/user/{{user_id}}">My profile</a></li>
-                    {% endif %}
-                    <li><a  href="/logout">Logout</a></li>
-                </ul>
+            <ul>
+                <li><a href="{{ url_for('list_main_page') }}">Home</a></li>
+                <li><a href="{{ url_for('display_all_tags') }}">All tags</a></li>
+                {% if user_id == user_data['id'] %}
+                <li><a href="/users">Users</a></li>
+                <li><a class="active" href="/user/{{user_id}}">My profile</a></li>
+                {% else %}
+                <li><a class="active" href="/users">Users</a></li>
+                <li><a href="/user/{{user_id}}">My profile</a></li>
+                {% endif %}
+                <li><a href="/logout">Logout</a></li>
+            </ul>
 
             {% else %}
-                <ul>
-                    <li><a  href="{{ url_for('list_main_page') }}">Home</a></li>
-                    <li><a  href="{{ url_for('display_all_tags') }}">All tags</a></li>
-                    <li><a  href="/login">Login</a></li>
-                    <li><a  href="/register">Register</a></li>
-                </ul>
+            <ul>
+                <li><a href="{{ url_for('list_main_page') }}">Home</a></li>
+                <li><a href="{{ url_for('display_all_tags') }}">All tags</a></li>
+                <li><a href="/login">Login</a></li>
+                <li><a href="/register">Register</a></li>
+            </ul>
             {% endif %}
 
         </div>
     </nav>
-  </header>
+</header>
 <body>
-    <div class="yellow">
-            <p class="yellow__user">{{ user_data['user_name'] }}<br>With us since: {{ user_data['registration_time'] }}<br>Reputation: {{ user_data['reputation'] }}</p>
+<div class="yellow">
+    <p class="yellow__user">{{ user_data['user_name'] }}<br>With us since: {{ user_data['registration_time'] }}<br>Reputation:
+        {{ user_data['reputation'] }}</p>
 
-        <div class="yellow__btn_area">
-            {% if user_id == user_data['id'] %}
-            <a class="ask-user-button" href="/user/questions">Your questions: {{ questions['question'] }} <br> &#8595</a>
-            <a class="ask-user-button" href="/user/answers">Your answers: {{ answers['answer'] }}<br> &#8595</a>
-            <a class="ask-user-button" href="/user/comments">Your comments: {{ comments['comment'] }}<br> &#8595</a>
-            {% else %}
-            <a class="ask-user-button" href="/user/questions">User questions: {{ questions['question'] }} <br> &#8595</a>
-            <a class="ask-user-button" href="/user/answers">User answers: {{ answers['answer'] }}<br> &#8595</a>
-            <a class="ask-user-button" href="/user/comments">User comments: {{ comments['comment'] }}<br> &#8595</a>
-            {% endif %}
-        </div>
-        <div class="yellow_question-list">
-        {% if url == "/user/questions" %}
-            {% for question in user_questions %}
-                <div class="box" id="{{ question['id'] }}">
-                    <p class="date">published: {{ question["submission_time"] }} | views: {{ question["view_number"] }} </p>
-                    <div class="comment-block">
-                        {% if question['image'] %}
-                            <img class="question-photo-embed" alt="question image" src="{{ url_for('static', filename=question['image']) }}"> {% endif %}
-                            <h3 class="box-tittle">
-                                <a href="{{ url_for('question', question_id=question['id']) }}"> {{ question["title"] | safe }}</a>
-                            </h3>
-                        <p class="list-text">{{ question["message"] | safe }}</p>
-                    </div>
-                    {% set upvote_link = "/question/" ~ question.id ~ "/add-vote?user_page=true#" ~ question.id   %}
-                    {% set downvote_link ="/question/" ~ question.id ~ "/remove-vote?user_page=true#" ~ question.id %}
-{#                    {% set upvote_link = upvote_link ~ "&user_page=true#" ~ question.id %}#}
-{#                    {% set downvote_link = downvote_link ~ "&user_page=true#" ~ question.id %}#}
-                    <div class="box-voting">
-                        <p class="date"> Number of votes: {{ question["vote_number"] }} Vote:
-                            <a href="{{upvote_link}}">
-                                <img class="thumb" alt="thumbup" src="{{ url_for('static', filename='Pictures/iconmonstr-thumb-10-240.png') }}">
-                            </a>
-                            <a href="{{downvote_link}}">
-
-                                <img class="thumb" alt="thumbdown" src="{{ url_for('static', filename='Pictures/iconmonstr-thumb-12-240.png') }}">
-                            </a>Tags:
-                            {%  for tag in tags[question["id"]] %}
-                                {{ tag.name }}
-                                <a href="/question/{{question.id}}/tag/{{tag.id}}/delete?user_page=true#{{question.id}}">&#x2716</a>
-                            {% endfor %}
-                            <a href="/question/{{question.id}}/new-tag?user_page=true#{{question.id}}">Add tag</a>
-                        </p>
-                    </div>
-                </div>
-            {% endfor %}
-        {% elif url == "/user/answers" %}
-            {% for answer in user_answers %}
-                <div class="box">
-                    <div class="edit-delete"><a href="/question/{{ answer['question_id'] }}">See the question</a> |
-                        <a class="sort" href="/question/{{answer.question_id}}/{{answer.id}}/edit">edit</a> |
-                        <a href="/answer/{{answer.id}}/delete">delete</a>
-                    </div>
-                    <p class="date">published: {{ answer["submission_time"] }}</p>
-                    <div class="comment-block">
-                        {% if answer['image'] %}
-                        <img class="question-photo" src="{{ url_for('static', filename=answer['image']) }}"> {% endif %}
-
-                        <p class="list-text">{{ answer["message"] }}</p>
-                    </div>
-                    <div class="box-voting">
-                        <p class="date"> Number of votes: {{ answer["vote_number"] }} Vote:
-                        <a href="/answer/{{answer.id}}/add-vote?page=answer">
-                            <img class="thumb" alt="thumbup" src="{{ url_for('static', filename='Pictures/iconmonstr-thumb-10-240.png') }}">
-                        </a>
-                        <a href="/answer/{{answer.id}}/remove-vote?page=answer">
-                            <img class="thumb" alt="thumbdown" src="{{ url_for('static', filename='Pictures/iconmonstr-thumb-12-240.png') }}">
-                        </a>
-                    </div>
-                    <p class="box-list-acceptance-buttons"> <a class="ask-call-button" href="/answer/{{answer.id}}/new-comment">Add your comment</a></p>
-                    <div class="acceptance_button">
-                        {% if answer.accepted %}
-                            <img class="acceptance" alt="accepted" src="{{ url_for('static', filename='Pictures/accepted.png') }}">
-                             <div class="undo-acceptance2"><a  href="/answer/{{ answer.id }}/accept">Undo acceptance</a> |</div>
-                        {% else %}
-                            <a href="/answer/{{ answer.id }}/accept">
-                                <img class="acceptance" alt="awaiting_acceptance" src="{{ url_for('static', filename='Pictures/awaiting_acceptance.png') }}">
-                            </a>
-                        {% endif %}
-                    </div>
-                </div>
-            {% endfor %}
-        {% elif url == "/user/comments" %}
-            {% for comment in user_comments %}
-                <div class="box" id="{{comment.id}}">
-                    <div class="edit-delete">
-                        {% if comment['answer_id'] is none %}
-                        <a href="/question/{{ comment['question_id'] }}/comments">See the question</a> |
-                        {% else %}
-                        <a href="/answer/{{ comment['answer_id'] }}">See the answer</a> |
-                        {% endif %}
-                        <a class="sort" href="/question/{{comment.question_id}}/{{comment.id}}/edit-comment">edit</a> |
-                        <a href="/comments/{{comment.id}}/delete">delete</a>
-                    </div>
-                    <p class="date">Published: {{comment.submission_time }}</p>
-                    <div class="comment-block">
-                        <p class="list-text">{{comment.message}}</p>
-                    </div>
-                    <p class="date">Edited {{comment.edited_count}}  {{ "time" if comment.edited_count == 1 else "times" }}</p>
-                </div>
-		    {% endfor %}
+    <div class="yellow__btn_area">
+        {% if user_id == user_data['id'] %}
+        <a class="ask-user-button" href="/user/questions">Your questions: {{ questions['question'] }} <br> &#8595</a>
+        <a class="ask-user-button" href="/user/answers">Your answers: {{ answers['answer'] }}<br> &#8595</a>
+        <a class="ask-user-button" href="/user/comments">Your comments: {{ comments['comment'] }}<br> &#8595</a>
+        {% else %}
+        <a class="ask-user-button" href="/user/questions">User questions: {{ questions['question'] }} <br> &#8595</a>
+        <a class="ask-user-button" href="/user/answers">User answers: {{ answers['answer'] }}<br> &#8595</a>
+        <a class="ask-user-button" href="/user/comments">User comments: {{ comments['comment'] }}<br> &#8595</a>
         {% endif %}
+    </div>
+    <div class="yellow_question-list">
+        {% if url == "/user/questions" %}
+        {% for question in user_questions %}
+        <div class="box" id="{{ question['id'] }}">
+            <p class="date">published: {{ question["submission_time"] }} | views: {{ question["view_number"] }} </p>
+            <div class="comment-block">
+                {% if question['image'] %}
+                <img alt="question image" class="question-photo-embed"
+                     src="{{ url_for('static', filename=question['image']) }}"> {% endif %}
+                <h3 class="box-tittle">
+                    <a href="{{ url_for('question', question_id=question['id']) }}"> {{ question["title"] | safe }}</a>
+                </h3>
+                <p class="list-text">{{ question["message"] | safe }}</p>
+            </div>
+            {% set upvote_link = "/question/" ~ question.id ~ "/add-vote?user_page=true#" ~ question.id %}
+            {% set downvote_link ="/question/" ~ question.id ~ "/remove-vote?user_page=true#" ~ question.id %}
+            {# {% set upvote_link = upvote_link ~ "&user_page=true#" ~ question.id %}#}
+            {# {% set downvote_link = downvote_link ~ "&user_page=true#" ~ question.id %}#}
+            <div class="box-voting">
+                <p class="date"> Number of votes: {{ question["vote_number"] }} Vote:
+                    <a href="{{upvote_link}}">
+                        <img alt="thumbup" class="thumb"
+                             src="{{ url_for('static', filename='Pictures/iconmonstr-thumb-10-240.png') }}">
+                    </a>
+                    <a href="{{downvote_link}}">
+
+                        <img alt="thumbdown" class="thumb"
+                             src="{{ url_for('static', filename='Pictures/iconmonstr-thumb-12-240.png') }}">
+                    </a>Tags:
+                    {% for tag in tags[question["id"]] %}
+                    {{ tag.name }}
+                    <a href="/question/{{question.id}}/tag/{{tag.id}}/delete?user_page=true#{{question.id}}">&#x2716</a>
+                    {% endfor %}
+                    <a href="/question/{{question.id}}/new-tag?user_page=true#{{question.id}}">Add tag</a>
+                </p>
+            </div>
         </div>
-        {% endblock %}
+        {% endfor %}
+        {% elif url == "/user/answers" %}
+        {% for answer in user_answers %}
+        <div class="box">
+            <div class="edit-delete"><a href="/question/{{ answer['question_id'] }}">See the question</a> |
+                <a class="sort" href="/question/{{answer.question_id}}/{{answer.id}}/edit">edit</a> |
+                <a href="/answer/{{answer.id}}/delete">delete</a>
+            </div>
+            <p class="date">published: {{ answer["submission_time"] }}</p>
+            <div class="comment-block">
+                {% if answer['image'] %}
+                <img class="question-photo" src="{{ url_for('static', filename=answer['image']) }}"> {% endif %}
+
+                <p class="list-text">{{ answer["message"] }}</p>
+            </div>
+            <div class="box-voting">
+                <p class="date"> Number of votes: {{ answer["vote_number"] }} Vote:
+                    <a href="/answer/{{answer.id}}/add-vote?page=answer">
+                        <img alt="thumbup" class="thumb"
+                             src="{{ url_for('static', filename='Pictures/iconmonstr-thumb-10-240.png') }}">
+                    </a>
+                    <a href="/answer/{{answer.id}}/remove-vote?page=answer">
+                        <img alt="thumbdown" class="thumb"
+                             src="{{ url_for('static', filename='Pictures/iconmonstr-thumb-12-240.png') }}">
+                    </a>
+            </div>
+            <p class="box-list-acceptance-buttons"><a class="ask-call-button" href="/answer/{{answer.id}}/new-comment">Add
+                your comment</a></p>
+            <div class="acceptance_button">
+                {% if answer.accepted %}
+                <img alt="accepted" class="acceptance" src="{{ url_for('static', filename='Pictures/accepted.png') }}">
+                <div class="undo-acceptance2"><a href="/answer/{{ answer.id }}/accept">Undo acceptance</a> |</div>
+                {% else %}
+                <a href="/answer/{{ answer.id }}/accept">
+                    <img alt="awaiting_acceptance" class="acceptance"
+                         src="{{ url_for('static', filename='Pictures/awaiting_acceptance.png') }}">
+                </a>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+        {% elif url == "/user/comments" %}
+        {% for comment in user_comments %}
+        <div class="box" id="{{comment.id}}">
+            <div class="edit-delete">
+                {% if comment['answer_id'] is none %}
+                <a href="/question/{{ comment['question_id'] }}/comments">See the question</a> |
+                {% else %}
+                <a href="/answer/{{ comment['answer_id'] }}">See the answer</a> |
+                {% endif %}
+                <a class="sort" href="/question/{{comment.question_id}}/{{comment.id}}/edit-comment">edit</a> |
+                <a href="/comments/{{comment.id}}/delete">delete</a>
+            </div>
+            <p class="date">Published: {{comment.submission_time }}</p>
+            <div class="comment-block">
+                <p class="list-text">{{comment.message}}</p>
+            </div>
+            <p class="date">Edited {{comment.edited_count}} {{ "time" if comment.edited_count == 1 else "times" }}</p>
+        </div>
+        {% endfor %}
+        {% endif %}
+    </div>
+    {% endblock %}

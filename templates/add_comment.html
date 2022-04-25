@@ -1,12 +1,11 @@
-
 {% extends 'base.html' %}
 {% block head %}<title>Foodie Helpdesk</title>
 {% for message in get_flashed_messages() %}
-    <div class="alert alert-warning">
-        <script type="text/javascript">
-			alert('{{ message }}');
-		</script>
-    </div>
+<div class="alert alert-warning">
+    <script type="text/javascript">
+        alert('{{ message }}');
+    </script>
+</div>
 {% endfor %}
 {% endblock %}
 
@@ -14,100 +13,108 @@
 
 
 <header>
-<!-- Main Top Menu -->
+    <!-- Main Top Menu -->
     <nav>
         <div class="menu">
-                <a id="logo-box" href="{{ url_for('list_main_page') }}">
-                <img class="menu__logo" alt="Foodie Helpdesk Logo" src="{{ url_for('static', filename='Pictures/chefer-1.png') }}">
-                        </a>
+            <a href="{{ url_for('list_main_page') }}" id="logo-box">
+                <img alt="Foodie Helpdesk Logo" class="menu__logo"
+                     src="{{ url_for('static', filename='Pictures/chefer-1.png') }}">
+            </a>
 
             {% if logged %}
-                <ul>
-                    <li><a  href="{{ url_for('list_main_page') }}">Home</a></li>
-                    <li><a  href="{{ url_for('display_all_tags') }}">All tags</a></li>
-                    <li><a  href="/users">Users</a></li>
-                    <li><a  href="/user/{{user_id}}">My profile</a></li>
-                    <li><a  href="/logout">Logout</a></li>
-                </ul>
+            <ul>
+                <li><a href="{{ url_for('list_main_page') }}">Home</a></li>
+                <li><a href="{{ url_for('display_all_tags') }}">All tags</a></li>
+                <li><a href="/users">Users</a></li>
+                <li><a href="/user/{{user_id}}">My profile</a></li>
+                <li><a href="/logout">Logout</a></li>
+            </ul>
 
             {% else %}
-                <ul>
-                    <li><a  href="{{ url_for('list_main_page') }}">Home</a></li>
-                    <li><a  href="{{ url_for('display_all_tags') }}">All tags</a></li>
-                    <li><a  href="/users">Users</a></li>
-                    <li><a  href="/login">Login</a></li>
-                    <li><a  href="/register">Register</a></li>
-                </ul>
+            <ul>
+                <li><a href="{{ url_for('list_main_page') }}">Home</a></li>
+                <li><a href="{{ url_for('display_all_tags') }}">All tags</a></li>
+                <li><a href="/users">Users</a></li>
+                <li><a href="/login">Login</a></li>
+                <li><a href="/register">Register</a></li>
+            </ul>
             {% endif %}
 
         </div>
     </nav>
-  </header>
-	<div class="wrapp-around">
-		<div class="yellow">
-			<h2 class="yellow-header">Comment to {{header}} </h2>
-			<div class="box">
-                {% if question %}
-				<p class="date">published: {{ question["submission_time"] }} | views: {{ question["view_number"] }} </p>
-                <div class="comment-block">
-					{% if question['image'] %}
-					<img class="question-photo" src="{{ url_for('static', filename=question['image']) }}"> {% endif %}
-					<h3 class="box-tittle">
-						<a href="{{ url_for('question', question_id=question['id']) }}"> {{ question["title"] }} </a>
-					</h3>
-					<p class="list-text">{{ question["message"] }}</p>
-				</div>
-				<div class="box-voting">
-					<p class="date"> Number of votes: {{ question["vote_number"] }} Vote:
-						<a href="{{ url_for('add_vote_to_question', question_id=question['id']) }}">
-							<img class="thumb" alt="thumbup" src="{{ url_for('static', filename='Pictures/iconmonstr-thumb-10-240.png') }}">
-						</a>
-						<a href="{{ url_for('remove_vote_from_question', question_id=question['id']) }}">
-							<img class="thumb" alt="thumbdown" src="{{ url_for('static', filename='Pictures/iconmonstr-thumb-12-240.png') }}">
-						</a>
+</header>
+<div class="wrapp-around">
+    <div class="yellow">
+        <h2 class="yellow-header">Comment to {{header}} </h2>
+        <div class="box">
+            {% if question %}
+            <p class="date">published: {{ question["submission_time"] }} | views: {{ question["view_number"] }} </p>
+            <div class="comment-block">
+                {% if question['image'] %}
+                <img class="question-photo" src="{{ url_for('static', filename=question['image']) }}"> {% endif %}
+                <h3 class="box-tittle">
+                    <a href="{{ url_for('question', question_id=question['id']) }}"> {{ question["title"] }} </a>
+                </h3>
+                <p class="list-text">{{ question["message"] }}</p>
+            </div>
+            <div class="box-voting">
+                <p class="date"> Number of votes: {{ question["vote_number"] }} Vote:
+                    <a href="{{ url_for('add_vote_to_question', question_id=question['id']) }}">
+                        <img alt="thumbup" class="thumb"
+                             src="{{ url_for('static', filename='Pictures/iconmonstr-thumb-10-240.png') }}">
+                    </a>
+                    <a href="{{ url_for('remove_vote_from_question', question_id=question['id']) }}">
+                        <img alt="thumbdown" class="thumb"
+                             src="{{ url_for('static', filename='Pictures/iconmonstr-thumb-12-240.png') }}">
+                    </a>
                     {% endif %}
-				{% if answer %}
+                    {% if answer %}
                 <p class="date">published: {{ answer["submission_time"] }}}} </p>
                 <div class="comment-block">
-					{% if question['image'] %}
-					<img class="answer-photo" src="{{ url_for('static', filename=question['image']) }}"> {% endif %}
-					<h3 class="box-tittle">
-						<a href="{{ url_for('answer', question_id=answer['question_id'], answer_id=answer['id']) }}"> {{ answer["title"] }} </a>
-					</h3>
-					<p class="list-text">{{ answer["message"] }}</p>
-				</div>
-				<div class="box-voting">
-
-					<p class="date"> Number of votes: {{ answer["vote_number"] }} Vote:
-						<a href="{{ url_for('add_vote_to_question', question_id=answer['question_id'], answer=answer['id']) }}">
-							<img class="thumb" alt="thumbup" src="{{ url_for('static', filename='Pictures/iconmonstr-thumb-10-240.png') }}">
-						</a>
-						<a href="{{ url_for('remove_vote_from_question', question_id=answer['question_id'], answer=answer['id']) }}">
-							<img class="thumb" alt="thumbdown" src="{{ url_for('static', filename='Pictures/iconmonstr-thumb-12-240.png') }}">
-						</a>
+                    {% if question['image'] %}
+                    <img class="answer-photo" src="{{ url_for('static', filename=question['image']) }}"> {% endif %}
+                    <h3 class="box-tittle">
+                        <a href="{{ url_for('answer', question_id=answer['question_id'], answer_id=answer['id']) }}"> {{
+                            answer["title"] }} </a>
+                    </h3>
+                    <p class="list-text">{{ answer["message"] }}</p>
                 </div>
-            {% endif %}
+                <div class="box-voting">
+
+                    <p class="date"> Number of votes: {{ answer["vote_number"] }} Vote:
+                        <a href="{{ url_for('add_vote_to_question', question_id=answer['question_id'], answer=answer['id']) }}">
+                            <img alt="thumbup" class="thumb"
+                                 src="{{ url_for('static', filename='Pictures/iconmonstr-thumb-10-240.png') }}">
+                        </a>
+                        <a href="{{ url_for('remove_vote_from_question', question_id=answer['question_id'], answer=answer['id']) }}">
+                            <img alt="thumbdown" class="thumb"
+                                 src="{{ url_for('static', filename='Pictures/iconmonstr-thumb-12-240.png') }}">
+                        </a>
+                </div>
+                {% endif %}
             </div>
 
-		</div>
-	</div>
-
-	<div class="add-comment-area">
-		<div class="wrapp-around">
-			<div class="box">
-				<form method="post" action="{{url}}" enctype="multipart/form-data">
-					<h2>{{action}} Comment</h2>
-                    {% if comment_message %}
-					<textarea name="comment" cols="30" rows="5" class="html-text-box">{{ comment_message }}</textarea><br>
-					{% else %}
-                    <textarea name="comment" cols="30" rows="5" class="html-text-box" placeholder="Submit your comment"></textarea><br>
-                    {% endif %}
-                    <input type="submit" value="Submit" class="html-text-box">
-					<input type="reset" value="Reset" class="html-text-box">
-				</form>
-			</div>
-		</div>
-	</div>
+        </div>
     </div>
+
+    <div class="add-comment-area">
+        <div class="wrapp-around">
+            <div class="box">
+                <form action="{{url}}" enctype="multipart/form-data" method="post">
+                    <h2>{{action}} Comment</h2>
+                    {% if comment_message %}
+                    <textarea class="html-text-box" cols="30" name="comment"
+                              rows="5">{{ comment_message }}</textarea><br>
+                    {% else %}
+                    <textarea class="html-text-box" cols="30" name="comment" placeholder="Submit your comment"
+                              rows="5"></textarea><br>
+                    {% endif %}
+                    <input class="html-text-box" type="submit" value="Submit">
+                    <input class="html-text-box" type="reset" value="Reset">
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
 {%  endblock %}

@@ -1,12 +1,11 @@
-
 {% extends 'base.html' %}
 {% block head %}<title>Foodie Helpdesk</title>
 {% for message in get_flashed_messages() %}
-    <div class="alert alert-warning">
-        <script type="text/javascript">
-			alert('{{ message }}');
-		</script>
-    </div>
+<div class="alert alert-warning">
+    <script type="text/javascript">
+        alert('{{ message }}');
+    </script>
+</div>
 {% endfor %}
 {% endblock %}
 
@@ -14,140 +13,149 @@
 
 
 <header>
-<!-- Main Top Menu -->
+    <!-- Main Top Menu -->
     <nav>
         <div class="menu">
-                <a id="logo-box" href="{{ url_for('list_main_page') }}">
-                <img class="menu__logo" alt="Foodie Helpdesk Logo" src="{{ url_for('static', filename='Pictures/chefer-1.png') }}">
-                        </a>
+            <a href="{{ url_for('list_main_page') }}" id="logo-box">
+                <img alt="Foodie Helpdesk Logo" class="menu__logo"
+                     src="{{ url_for('static', filename='Pictures/chefer-1.png') }}">
+            </a>
 
             {% if logged %}
-                <ul>
-                    <li><a  href="{{ url_for('list_main_page') }}">Home</a></li>
-                    <li><a  href="{{ url_for('display_all_tags') }}">All tags</a></li>
-                    <li><a  href="/users">Users</a></li>
-                    <li><a  href="/user/{{user_id}}">My profile</a></li>
-                    <li><a  href="/logout">Logout</a></li>
-                </ul>
+            <ul>
+                <li><a href="{{ url_for('list_main_page') }}">Home</a></li>
+                <li><a href="{{ url_for('display_all_tags') }}">All tags</a></li>
+                <li><a href="/users">Users</a></li>
+                <li><a href="/user/{{user_id}}">My profile</a></li>
+                <li><a href="/logout">Logout</a></li>
+            </ul>
 
             {% else %}
-                <ul>
-                    <li><a  href="{{ url_for('list_main_page') }}">Home</a></li>
-                    <li><a  href="{{ url_for('display_all_tags') }}">All tags</a></li>
-                    <li><a  href="/users">Users</a></li>
-                    <li><a  href="/login">Login</a></li>
-                    <li><a  href="/register">Register</a></li>
-                </ul>
+            <ul>
+                <li><a href="{{ url_for('list_main_page') }}">Home</a></li>
+                <li><a href="{{ url_for('display_all_tags') }}">All tags</a></li>
+                <li><a href="/users">Users</a></li>
+                <li><a href="/login">Login</a></li>
+                <li><a href="/register">Register</a></li>
+            </ul>
             {% endif %}
 
         </div>
     </nav>
-  </header>
+</header>
 
-	<div class="wrapp-around">
-		<div class="yellow">
-			<h2 class="yellow-header"> Question </h2>
-			<div class="box">
-				{% if session_id == question.user_id %}
-				<div class="edit-delete"><a class="sort" href="/question/{{question.id}}/edit">edit</a> |
-					<a href="/question/{{question.id}}/delete">delete</a></div>
-				{% endif %}
-				<p class="date">Author: <a class="author" href="/user/{{ user_id }}">{{ question.user_name }} </a>| published: {{ question["submission_time"] }} | views: {{ question["view_number"] }} </p>
+<div class="wrapp-around">
+    <div class="yellow">
+        <h2 class="yellow-header"> Question </h2>
+        <div class="box">
+            {% if session_id == question.user_id %}
+            <div class="edit-delete"><a class="sort" href="/question/{{question.id}}/edit">edit</a> |
+                <a href="/question/{{question.id}}/delete">delete</a></div>
+            {% endif %}
+            <p class="date">Author: <a class="author" href="/user/{{ user_id }}">{{ question.user_name }} </a>|
+                published: {{ question["submission_time"] }} | views: {{ question["view_number"] }} </p>
 
-				<div class="comment-block">
-					{% if question['image'] %}
-					<img class="question-photo" src="{{ url_for('static', filename=question['image']) }}"> {% endif %}
-					<h3 class="box-tittle">
-						<a href="{{ url_for('question', question_id=question['id']) }}"> {{ question["title"] }} </a>
-					</h3>
+            <div class="comment-block">
+                {% if question['image'] %}
+                <img class="question-photo" src="{{ url_for('static', filename=question['image']) }}"> {% endif %}
+                <h3 class="box-tittle">
+                    <a href="{{ url_for('question', question_id=question['id']) }}"> {{ question["title"] }} </a>
+                </h3>
 
-					<p class="list-text">{{ question["message"] }}</p>
-				</div>
-				<div class="box-voting">
-					<p class="date"> Number of votes: {{ question["vote_number"] }} Vote:
-						<a href="/question/{{question.id}}/add-vote?page=question">
-							<img class="thumb" alt="thumbup" src="{{ url_for('static', filename='Pictures/iconmonstr-thumb-10-240.png') }}">
-						</a>
-						<a href="/question/{{question.id}}/remove-vote?page=question">
-							<img class="thumb" alt="thumbdown" src="{{ url_for('static', filename='Pictures/iconmonstr-thumb-12-240.png') }}">
-						</a>
+                <p class="list-text">{{ question["message"] }}</p>
+            </div>
+            <div class="box-voting">
+                <p class="date"> Number of votes: {{ question["vote_number"] }} Vote:
+                    <a href="/question/{{question.id}}/add-vote?page=question">
+                        <img alt="thumbup" class="thumb"
+                             src="{{ url_for('static', filename='Pictures/iconmonstr-thumb-10-240.png') }}">
+                    </a>
+                    <a href="/question/{{question.id}}/remove-vote?page=question">
+                        <img alt="thumbdown" class="thumb"
+                             src="{{ url_for('static', filename='Pictures/iconmonstr-thumb-12-240.png') }}">
+                    </a>
 
-                        {%  for tag in tags[question["id"]] %}
-                            {{ tag.name }}
-                                <a href="/question/{{question.id}}/tag/{{tag.id}}/delete">&#x2716</a>
-                        {% endfor %}
+                    {% for tag in tags[question["id"]] %}
+                    {{ tag.name }}
+                    <a href="/question/{{question.id}}/tag/{{tag.id}}/delete">&#x2716</a>
+                    {% endfor %}
 
-                        <a href="/question/{{question.id}}/new-tag">Add tag</a>
+                    <a href="/question/{{question.id}}/new-tag">Add tag</a>
 
-                    </p>
+                </p>
 
-				</div>
-				<p class="box-list-buttons">
-					<a class="ask-call-button" href="{{ url_for('add_answer', question_id=question['id']) }}">Add your answer</a>
-					<a class="ask-call-button" href="/question/{{question.id}}/new-comment">Add your comment</a>
-					<a class="ask-call-button" href="/question/{{question.id}}/comments">See comments</a>
-				</p>
+            </div>
+            <p class="box-list-buttons">
+                <a class="ask-call-button" href="{{ url_for('add_answer', question_id=question['id']) }}">Add your
+                    answer</a>
+                <a class="ask-call-button" href="/question/{{question.id}}/new-comment">Add your comment</a>
+                <a class="ask-call-button" href="/question/{{question.id}}/comments">See comments</a>
+            </p>
 
-			</div>
-		</div>
-	</div>
+        </div>
+    </div>
+</div>
 
-	<! – list of answers header and sort –>
+<! – list of answers header and sort –>
 
-	<div>
-		<h1 id="answers">Answers</h1>
-	</div>
-	<div class="question-list">
-		<p class="sort">Sort:
-			<a href="/question/{{question.id}}?order_by=submission_time&order_direction=desc">submission time</a> |
-			<a href="/question/{{question.id}}?order_by=message&order_direction=desc">message</a> |
-			<a href="/question/{{question.id}}?order_by=vote_number&order_direction=desc">number of votes</a>
-		</p>
-		<p class="sort">Sort:
-			<a href="/question/{{question.id}}?order_by={{last_key}}&order_direction=desc">&#8593</a> |
-			<a href="/question/{{question.id}}?order_by={{last_key}}&order_direction=asc">&#8595</a>
+<div>
+    <h1 id="answers">Answers</h1>
+</div>
+<div class="question-list">
+    <p class="sort">Sort:
+        <a href="/question/{{question.id}}?order_by=submission_time&order_direction=desc">submission time</a> |
+        <a href="/question/{{question.id}}?order_by=message&order_direction=desc">message</a> |
+        <a href="/question/{{question.id}}?order_by=vote_number&order_direction=desc">number of votes</a>
+    </p>
+    <p class="sort">Sort:
+        <a href="/question/{{question.id}}?order_by={{last_key}}&order_direction=desc">&#8593</a> |
+        <a href="/question/{{question.id}}?order_by={{last_key}}&order_direction=asc">&#8595</a>
 
-		</p>
-	</div>
+    </p>
+</div>
 
-	<! – DISPAY LIST –>
+<! – DISPAY LIST –>
 
-	{% for answer in answers %}
-	<div class="box" id="{{answer.id}}">
-		{% if session_id == answer.user_id %}
+{% for answer in answers %}
+<div class="box" id="{{answer.id}}">
+    {% if session_id == answer.user_id %}
     <div class="edit-delete"><a class="sort" href="/question/{{question.id}}/{{answer.id}}/edit">edit</a> |
-					<a href="/answer/{{answer.id}}/delete">delete</a></div>
-		{% endif %}
-		<p class="date">Author: <a class="author" href="/user/{{ user_id }}">{{ answer.user_name }} </a>| Published: {{answer.submission_time }}</p>
-		<div class="comment-block">
-			{% if answer.image %}
-			<img class="question-photo-embed" src="{{ url_for('static', filename=answer.image) }}"> {% endif %}
-			<p class="list-text">{{answer.message}}</p>
-		</div>
-		<div class="box-voting">
-			<p class="date"> Number of votes: {{ answer.vote_number }} Vote:
-				<a href="/answer/{{answer.id}}/add-vote#{{answer.id}}">
-					<img class="thumb" alt="thumbup" src="{{ url_for('static', filename='Pictures/iconmonstr-thumb-10-240.png') }}">
-				</a>
-				<a href="/answer/{{answer.id}}/remove-vote#{{answer.id}}">
-					<img class="thumb" alt="thumbdown" src="{{ url_for('static', filename='Pictures/iconmonstr-thumb-12-240.png') }}">
-				</a>
-			</p>
+        <a href="/answer/{{answer.id}}/delete">delete</a></div>
+    {% endif %}
+    <p class="date">Author: <a class="author" href="/user/{{ user_id }}">{{ answer.user_name }} </a>| Published:
+        {{answer.submission_time }}</p>
+    <div class="comment-block">
+        {% if answer.image %}
+        <img class="question-photo-embed" src="{{ url_for('static', filename=answer.image) }}"> {% endif %}
+        <p class="list-text">{{answer.message}}</p>
+    </div>
+    <div class="box-voting">
+        <p class="date"> Number of votes: {{ answer.vote_number }} Vote:
+            <a href="/answer/{{answer.id}}/add-vote#{{answer.id}}">
+                <img alt="thumbup" class="thumb"
+                     src="{{ url_for('static', filename='Pictures/iconmonstr-thumb-10-240.png') }}">
+            </a>
+            <a href="/answer/{{answer.id}}/remove-vote#{{answer.id}}">
+                <img alt="thumbdown" class="thumb"
+                     src="{{ url_for('static', filename='Pictures/iconmonstr-thumb-12-240.png') }}">
+            </a>
+        </p>
 
-		</div>
-		<p class="box-list-acceptance-buttons"> <a class="ask-call-button" href="/answer/{{answer.id}}">See comments</a></p>
-        <div class="acceptance_button">
-                        {% if answer.accepted %}
-                            <img class="acceptance" alt="accepted" src="{{ url_for('static', filename='Pictures/accepted.png') }}">
-                            <div class="undo-acceptance"><a  href="/answer/{{ answer.id }}/accept">Undo acceptance</a> |</div>
-                        {% else %}
-                            <a href="/answer/{{ answer.id }}/accept">
-                                <img class="acceptance" alt="awaiting_acceptance" src="{{ url_for('static', filename='Pictures/awaiting_acceptance.png') }}">
-                            </a>
-                        {% endif %}
-                    </div>
-	</div>
-		{% endfor %}
+    </div>
+    <p class="box-list-acceptance-buttons"><a class="ask-call-button" href="/answer/{{answer.id}}">See comments</a></p>
+    <div class="acceptance_button">
+        {% if answer.accepted %}
+        <img alt="accepted" class="acceptance" src="{{ url_for('static', filename='Pictures/accepted.png') }}">
+        <div class="undo-acceptance"><a href="/answer/{{ answer.id }}/accept">Undo acceptance</a> |</div>
+        {% else %}
+        <a href="/answer/{{ answer.id }}/accept">
+            <img alt="awaiting_acceptance" class="acceptance"
+                 src="{{ url_for('static', filename='Pictures/awaiting_acceptance.png') }}">
+        </a>
+        {% endif %}
+    </div>
+</div>
+{% endfor %}
 
 {% endblock %}
 

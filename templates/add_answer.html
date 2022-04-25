@@ -1,12 +1,11 @@
-
 {% extends 'base.html' %}
 {% block head %}<title>Foodie Helpdesk</title>
 {% for message in get_flashed_messages() %}
-    <div class="alert alert-warning">
-        <script type="text/javascript">
-			alert('{{ message }}');
-		</script>
-    </div>
+<div class="alert alert-warning">
+    <script type="text/javascript">
+        alert('{{ message }}');
+    </script>
+</div>
 {% endfor %}
 {% endblock %}
 
@@ -14,91 +13,98 @@
 
 
 <header>
-<!-- Main Top Menu -->
+    <!-- Main Top Menu -->
     <nav>
         <div class="menu">
-                <a id="logo-box" href="{{ url_for('list_main_page') }}">
-                <img class="menu__logo" alt="Foodie Helpdesk Logo" src="{{ url_for('static', filename='Pictures/chefer-1.png') }}">
-                        </a>
+            <a href="{{ url_for('list_main_page') }}" id="logo-box">
+                <img alt="Foodie Helpdesk Logo" class="menu__logo"
+                     src="{{ url_for('static', filename='Pictures/chefer-1.png') }}">
+            </a>
 
             {% if logged %}
-                <ul>
-                    <li><a  href="{{ url_for('list_main_page') }}">Home</a></li>
-                    <li><a  href="{{ url_for('display_all_tags') }}">All tags</a></li>
-                    <li><a  href="/users">Users</a></li>
-                    <li><a  href="/user/{{user_id}}">My profile</a></li>
-                    <li><a  href="/logout">Logout</a></li>
-                </ul>
+            <ul>
+                <li><a href="{{ url_for('list_main_page') }}">Home</a></li>
+                <li><a href="{{ url_for('display_all_tags') }}">All tags</a></li>
+                <li><a href="/users">Users</a></li>
+                <li><a href="/user/{{user_id}}">My profile</a></li>
+                <li><a href="/logout">Logout</a></li>
+            </ul>
 
             {% else %}
-                <ul>
-                    <li><a  href="{{ url_for('list_main_page') }}">Home</a></li>
-                    <li><a  href="{{ url_for('display_all_tags') }}">All tags</a></li>
-                    <li><a  href="/users">Users</a></li>
-                    <li><a  href="/login">Login</a></li>
-                    <li><a  href="/register">Register</a></li>
-                </ul>
+            <ul>
+                <li><a href="{{ url_for('list_main_page') }}">Home</a></li>
+                <li><a href="{{ url_for('display_all_tags') }}">All tags</a></li>
+                <li><a href="/users">Users</a></li>
+                <li><a href="/login">Login</a></li>
+                <li><a href="/register">Register</a></li>
+            </ul>
             {% endif %}
 
         </div>
     </nav>
-  </header>
-	<div class="wrapp-around">
-		<div class="yellow">
-			<h2 class="yellow-header"> Question </h2>
-			<div class="box">
-				<p class="date">published: {{ question["submission_time"] }} | views: {{ question["view_number"] }} </p>
-				<div class="comment-block">
-					{% if question['image'] %}
-					<img class="question-photo" src="{{ url_for('static', filename=question['image']) }}"> {% endif %}
-					<h3 class="box-tittle">
-						<a href="{{ url_for('question', question_id=question['id']) }}"> {{ question["title"] }} </a>
-					</h3>
+</header>
+<div class="wrapp-around">
+    <div class="yellow">
+        <h2 class="yellow-header"> Question </h2>
+        <div class="box">
+            <p class="date">published: {{ question["submission_time"] }} | views: {{ question["view_number"] }} </p>
+            <div class="comment-block">
+                {% if question['image'] %}
+                <img class="question-photo" src="{{ url_for('static', filename=question['image']) }}"> {% endif %}
+                <h3 class="box-tittle">
+                    <a href="{{ url_for('question', question_id=question['id']) }}"> {{ question["title"] }} </a>
+                </h3>
 
-					<p class="list-text">{{ question["message"] }}</p>
-				</div>
-				<div class="box-voting">
-					<p class="date"> Number of votes: {{ question["vote_number"] }} Vote:
-						<a href="{{ url_for('add_vote_to_question', question_id=question['id']) }}">
-							<img class="thumb" alt="thumbup" src="{{ url_for('static', filename='Pictures/iconmonstr-thumb-10-240.png') }}">
-						</a>
-						<a href="{{ url_for('remove_vote_from_question', question_id=question['id']) }}">
-							<img class="thumb" alt="thumbdown" src="{{ url_for('static', filename='Pictures/iconmonstr-thumb-12-240.png') }}">
-						</a>
-				</div>
-			</div>
-		</div>
-	</div>
+                <p class="list-text">{{ question["message"] }}</p>
+            </div>
+            <div class="box-voting">
+                <p class="date"> Number of votes: {{ question["vote_number"] }} Vote:
+                    <a href="{{ url_for('add_vote_to_question', question_id=question['id']) }}">
+                        <img alt="thumbup" class="thumb"
+                             src="{{ url_for('static', filename='Pictures/iconmonstr-thumb-10-240.png') }}">
+                    </a>
+                    <a href="{{ url_for('remove_vote_from_question', question_id=question['id']) }}">
+                        <img alt="thumbdown" class="thumb"
+                             src="{{ url_for('static', filename='Pictures/iconmonstr-thumb-12-240.png') }}">
+                    </a>
+            </div>
+        </div>
+    </div>
+</div>
 
-	<div class="add-comment-area">
-		<div class="wrapp-around">
-			<div class="box">
-                {% if answer is defined %}
-                <form method="post" action="{{ url_for('edit_answer',question_id=question["id"],  answer_id=answer["id"]) }}" enctype="multipart/form-data">
-                    <h2>Edit answer</h2>
-					{% if answer is defined %}
-                    <textarea name="message" cols="30" rows="5" class="html-text-box">{{ answer["message"] }}</textarea><br>
-                    {% else %}
-					<textarea name="message" cols="30" rows="5" class="html-text-box" placeholder="Submit your answer"></textarea><br>
-                    {% endif %}
-					<label for="answer-image">Upload photo:</label>
-					<input type="file" id="answer-image" name="image" accept="image/png, image/jpeg"><br>
-					<input type="submit" value="Submit" class="html-text-box">
-					<input type="reset" value="Reset" class="html-text-box">
-				</form>
+<div class="add-comment-area">
+    <div class="wrapp-around">
+        <div class="box">
+            {% if answer is defined %}
+            <form action="{{ url_for('edit_answer',question_id=question[" id method="post"
+            "], answer_id=answer["id"]) }}" enctype="multipart/form-data">
+            <h2>Edit answer</h2>
+            {% if answer is defined %}
+            <textarea class="html-text-box" cols="30" name="message" rows="5">{{ answer["message"] }}</textarea><br>
+            {% else %}
+            <textarea class="html-text-box" cols="30" name="message" placeholder="Submit your answer"
+                      rows="5"></textarea><br>
+            {% endif %}
+            <label for="answer-image">Upload photo:</label>
+            <input accept="image/png, image/jpeg" id="answer-image" name="image" type="file"><br>
+            <input class="html-text-box" type="submit" value="Submit">
+            <input class="html-text-box" type="reset" value="Reset">
+            </form>
 
-                {% else %}
-				<form method="post" action="{{ url_for('add_answer', question_id=question["id"]) }}" enctype="multipart/form-data">
-					<h2>Add answer</h2>
-					<textarea name="message" cols="30" rows="5" class="html-text-box" placeholder="Submit your answer"></textarea><br>
-					<label for="answer_image">Upload photo:</label>
+            {% else %}
+            <form action="{{ url_for('add_answer', question_id=question[" id method="post"
+            "]) }}" enctype="multipart/form-data">
+            <h2>Add answer</h2>
+            <textarea class="html-text-box" cols="30" name="message" placeholder="Submit your answer"
+                      rows="5"></textarea><br>
+            <label for="answer_image">Upload photo:</label>
 
-					<input type="file" id="answer-image" name="image" accept="image/png, image/jpeg"><br>
-					<input type="submit" value="Submit" class="html-text-box">
-					<input type="reset" value="Reset" class="html-text-box">
-				</form>
-                {% endif %}
-			</div>
-		</div>
-	</div>
+            <input accept="image/png, image/jpeg" id="answer-image" name="image" type="file"><br>
+            <input class="html-text-box" type="submit" value="Submit">
+            <input class="html-text-box" type="reset" value="Reset">
+            </form>
+            {% endif %}
+        </div>
+    </div>
+</div>
 {% endblock %}

@@ -1,12 +1,11 @@
-
 {% extends 'base.html' %}
 {% block head %}<title>Foodie Helpdesk</title>
 {% for message in get_flashed_messages() %}
-    <div class="alert alert-warning">
-        <script type="text/javascript">
-			alert('{{ message }}');
-		</script>
-    </div>
+<div class="alert alert-warning">
+    <script type="text/javascript">
+        alert('{{ message }}');
+    </script>
+</div>
 {% endfor %}
 {% endblock %}
 
@@ -14,158 +13,168 @@
 
 
 <header>
-<!-- Main Top Menu -->
+    <!-- Main Top Menu -->
     <nav>
         <div class="menu">
-                <a id="logo-box" href="{{ url_for('list_main_page') }}">
-                <img class="menu__logo" alt="Foodie Helpdesk Logo" src="{{ url_for('static', filename='Pictures/chefer-1.png') }}">
-                        </a>
+            <a href="{{ url_for('list_main_page') }}" id="logo-box">
+                <img alt="Foodie Helpdesk Logo" class="menu__logo"
+                     src="{{ url_for('static', filename='Pictures/chefer-1.png') }}">
+            </a>
 
             {% if logged %}
-                <ul>
-                    <li><a class="active" href="{{ url_for('list_main_page') }}">Home</a></li>
-                    <li><a  href="{{ url_for('display_all_tags') }}">All tags</a></li>
-                    <li><a  href="/users">Users</a></li>
-                    <li><a  href="/user/{{user_id}}">My profile</a></li>
-                    <li><a  href="/logout">Logout</a></li>
-                </ul>
+            <ul>
+                <li><a class="active" href="{{ url_for('list_main_page') }}">Home</a></li>
+                <li><a href="{{ url_for('display_all_tags') }}">All tags</a></li>
+                <li><a href="/users">Users</a></li>
+                <li><a href="/user/{{user_id}}">My profile</a></li>
+                <li><a href="/logout">Logout</a></li>
+            </ul>
 
             {% else %}
-                <ul>
-                    <li><a class="active" href="{{ url_for('list_main_page') }}">Home</a></li>
-                    <li><a  href="{{ url_for('display_all_tags') }}">All tags</a></li>
-                    <li><a  href="/users">Users</a></li>
-                    <li><a  href="/login">Login</a></li>
-                    <li><a  href="/register">Register</a></li>
-                </ul>
+            <ul>
+                <li><a class="active" href="{{ url_for('list_main_page') }}">Home</a></li>
+                <li><a href="{{ url_for('display_all_tags') }}">All tags</a></li>
+                <li><a href="/users">Users</a></li>
+                <li><a href="/login">Login</a></li>
+                <li><a href="/register">Register</a></li>
+            </ul>
             {% endif %}
 
         </div>
     </nav>
-  </header>
+</header>
 
 <div>
 
-	<! – TOP BANNER –>
-		<div class="container">
-			<div class="banner">
-				<h2 class="banner-tag">
-					You got lost in the kitchen?</h2>
-				<div class="ask-call-box">
-					<div id="call-title">
-					 <p>What are you struggling with?</p>
-					</div>
-					<div id="call-btn"><a class="ask-call-button" href="{{ url_for('add_question') }}">Ask your question</a>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<! – QUESTIONS PARAGRAPH WITH SEARCH FILTERS –>
-	<div id="main-header-question">
-		<h1>Questions</h1>
-    </div>
-    <div class="search-box">
-        <div>
-
-            <form action="/search">
-               <h4>Search for your question</h4> <input id="search-box" type="text" name="search-question">
-                <button type="submit" >Search</button>
-            </form>
-
+    <! – TOP BANNER –>
+    <div class="container">
+        <div class="banner">
+            <h2 class="banner-tag">
+                You got lost in the kitchen?</h2>
+            <div class="ask-call-box">
+                <div id="call-title">
+                    <p>What are you struggling with?</p>
+                </div>
+                <div id="call-btn"><a class="ask-call-button" href="{{ url_for('add_question') }}">Ask your question</a>
+                </div>
+            </div>
         </div>
     </div>
-    <div class="display-questions-list">
-		<a href="/list">All questions</a> |
-		<a href="/">Last questions</a>
-	</div>
+</div>
+<! – QUESTIONS PARAGRAPH WITH SEARCH FILTERS –>
+<div id="main-header-question">
+    <h1>Questions</h1>
+</div>
+<div class="search-box">
+    <div>
+
+        <form action="/search">
+            <h4>Search for your question</h4> <input id="search-box" name="search-question" type="text">
+            <button type="submit">Search</button>
+        </form>
+
+    </div>
+</div>
+<div class="display-questions-list">
+    <a href="/list">All questions</a> |
+    <a href="/">Last questions</a>
+</div>
 
 
-	<div class="question-list">
-		{%if url == '/list'%}
-		<p class="sort">Sort:
-			<a href="{{url}}?order_by=title&order_direction=desc">title</a> |
-			<a href="{{url}}?order_by=submission_time&order_direction=desc">submission time</a> |
-			<a href="{{url}}?order_by=message&order_direction=desc">message</a> |
-			<a href="{{url}}?order_by=view_number&order_direction=desc">number of views</a> |
-			<a href="{{url}}?order_by=vote_number&order_direction=desc">number of votes</a>
-		</p>
-		<p>
-			<a href="{{url}}?order_by={{last_key}}&order_direction=desc">&#8593</a> |
-			<a href="{{url}}?order_by={{last_key}}&order_direction=asc">&#8595</a>
-		</p>
-		{%endif%}
-	</div>
+<div class="question-list">
+    {%if url == '/list'%}
+    <p class="sort">Sort:
+        <a href="{{url}}?order_by=title&order_direction=desc">title</a> |
+        <a href="{{url}}?order_by=submission_time&order_direction=desc">submission time</a> |
+        <a href="{{url}}?order_by=message&order_direction=desc">message</a> |
+        <a href="{{url}}?order_by=view_number&order_direction=desc">number of views</a> |
+        <a href="{{url}}?order_by=vote_number&order_direction=desc">number of votes</a>
+    </p>
+    <p>
+        <a href="{{url}}?order_by={{last_key}}&order_direction=desc">&#8593</a> |
+        <a href="{{url}}?order_by={{last_key}}&order_direction=asc">&#8595</a>
+    </p>
+    {%endif%}
+</div>
 
-	<! – DISPAY LIST –>
+<! – DISPAY LIST –>
 
-	{% for question in questions_data %}
-	<div class="box" id="{{question.id}}">
-		<p class="date">Author: <a class="author" href="/user/{{ user_id }}">{{ question.user_name }} </a>| published: {{ question["submission_time"] }} | views: {{ question["view_number"] }} </p>
-		<div class="comment-block">
-			{% if question['image'] %}
-			<img class="question-photo-embed" alt="question image" src="{{ url_for('static', filename=question['image']) }}"> {% endif %}
-			<h3 class="box-tittle">
-				<a href="{{ url_for('question', question_id=question['id']) }}"> {{ question["title"] | safe }}</a>
-			</h3>
+{% for question in questions_data %}
+<div class="box" id="{{question.id}}">
+    <p class="date">Author: <a class="author" href="/user/{{ user_id }}">{{ question.user_name }} </a>| published: {{
+        question["submission_time"] }} | views: {{ question["view_number"] }} </p>
+    <div class="comment-block">
+        {% if question['image'] %}
+        <img alt="question image" class="question-photo-embed"
+             src="{{ url_for('static', filename=question['image']) }}"> {% endif %}
+        <h3 class="box-tittle">
+            <a href="{{ url_for('question', question_id=question['id']) }}"> {{ question["title"] | safe }}</a>
+        </h3>
 
-			<p class="list-text">{{ question["message"] | safe }}</p>
+        <p class="list-text">{{ question["message"] | safe }}</p>
 
-		</div>
+    </div>
 
-        {% set upvote_link = "/question/" ~ question.id ~ "/add-vote?order_by=" ~ last_key ~ "&order_direction=" ~ last_order  %}
-        {% set downvote_link ="/question/" ~ question.id ~ "/remove-vote?order_by=" ~ last_key ~ "&order_direction=" ~ last_order %}
-        {% if search_phrase is defined %}
-            {% set upvote_link = upvote_link ~ "&search_phrase=" ~ search_phrase %}
-            {% set downvote_link = downvote_link ~ "&search_phrase=" ~ search_phrase %}
-        {% endif %}
-        {% if limit is defined and limit == "true" %}
-            {% set upvote_link = upvote_link ~ "&limit=true#" ~ question.id %}
-            {% set downvote_link = downvote_link ~ "&limit=true#" ~ question.id %}
-        {% else %}
-            {% set upvote_link = upvote_link ~ "#" ~ question.id %}
-            {% set downvote_link = downvote_link ~ "#" ~ question.id %}
-        {% endif %}
-	  	<div class="box-voting">
-			<p class="date">
-                Number of votes: {{ question["vote_number"] }} | Vote:
-				<a href="{{upvote_link}}">
-					<img class="thumb" alt="thumbup" src="{{ url_for('static', filename='Pictures/iconmonstr-thumb-10-240.png') }}">
-				</a>
-				<a href="{{downvote_link}}">
+    {% set upvote_link = "/question/" ~ question.id ~ "/add-vote?order_by=" ~ last_key ~ "&order_direction=" ~
+    last_order %}
+    {% set downvote_link ="/question/" ~ question.id ~ "/remove-vote?order_by=" ~ last_key ~ "&order_direction=" ~
+    last_order %}
+    {% if search_phrase is defined %}
+    {% set upvote_link = upvote_link ~ "&search_phrase=" ~ search_phrase %}
+    {% set downvote_link = downvote_link ~ "&search_phrase=" ~ search_phrase %}
+    {% endif %}
+    {% if limit is defined and limit == "true" %}
+    {% set upvote_link = upvote_link ~ "&limit=true#" ~ question.id %}
+    {% set downvote_link = downvote_link ~ "&limit=true#" ~ question.id %}
+    {% else %}
+    {% set upvote_link = upvote_link ~ "#" ~ question.id %}
+    {% set downvote_link = downvote_link ~ "#" ~ question.id %}
+    {% endif %}
+    <div class="box-voting">
+        <p class="date">
+            Number of votes: {{ question["vote_number"] }} | Vote:
+            <a href="{{upvote_link}}">
+                <img alt="thumbup" class="thumb"
+                     src="{{ url_for('static', filename='Pictures/iconmonstr-thumb-10-240.png') }}">
+            </a>
+            <a href="{{downvote_link}}">
 
-					<img class="thumb" alt="thumbdown" src="{{ url_for('static', filename='Pictures/iconmonstr-thumb-12-240.png') }}">
-				</a>Tags:
-                {%  for tag in tags[question["id"]] %}
-                    {{ tag.name }}
-                    {%  if search_phrase is defined %}
-                        <a href="/question/{{question.id}}/tag/{{tag.id}}/delete?order_by={{last_key}}&order_direction={{last_order}}&search_phrase={{search_phrase}}#{{question.id}}">&#x2716</a>
-                    {% elif limit is not defined %}
-                        <a href="/question/{{question.id}}/tag/{{tag.id}}/delete?order_by={{last_key}}&order_direction={{last_order}}&redirect_to=main#{{question.id}}">&#x2716</a>
-                    {%  else %}
-                        <a href="/question/{{question.id}}/tag/{{tag.id}}/delete?order_by={{last_key}}&order_direction={{last_order}}&redirect_to=main&limit=true#{{question.id}}">&#x2716</a>
-                    {%  endif %}
-                {% endfor %}
-                {%  if search_phrase is defined %}
-                    <a href="/question/{{question.id}}/new-tag?order_by={{last_key}}&order_direction={{last_order}}&search_phrase={{search_phrase}}#{{question.id}}">Add tag</a>
-                {% elif limit is not defined %}
-                    <a href="/question/{{question.id}}/new-tag?order_by={{last_key}}&order_direction={{last_order}}&redirect_to=main#{{question.id}}">Add tag</a>
-                {%  else %}
-                    <a href="/question/{{question.id}}/new-tag?order_by={{last_key}}&order_direction={{last_order}}&redirect_to=main&limit=true#{{question.id}}">Add tag</a>
-                {% endif %}
+                <img alt="thumbdown" class="thumb"
+                     src="{{ url_for('static', filename='Pictures/iconmonstr-thumb-12-240.png') }}">
+            </a>Tags:
+            {% for tag in tags[question["id"]] %}
+            {{ tag.name }}
+            {% if search_phrase is defined %}
+            <a href="/question/{{question.id}}/tag/{{tag.id}}/delete?order_by={{last_key}}&order_direction={{last_order}}&search_phrase={{search_phrase}}#{{question.id}}">&#x2716</a>
+            {% elif limit is not defined %}
+            <a href="/question/{{question.id}}/tag/{{tag.id}}/delete?order_by={{last_key}}&order_direction={{last_order}}&redirect_to=main#{{question.id}}">&#x2716</a>
+            {% else %}
+            <a href="/question/{{question.id}}/tag/{{tag.id}}/delete?order_by={{last_key}}&order_direction={{last_order}}&redirect_to=main&limit=true#{{question.id}}">&#x2716</a>
+            {% endif %}
+            {% endfor %}
+            {% if search_phrase is defined %}
+            <a href="/question/{{question.id}}/new-tag?order_by={{last_key}}&order_direction={{last_order}}&search_phrase={{search_phrase}}#{{question.id}}">Add
+                tag</a>
+            {% elif limit is not defined %}
+            <a href="/question/{{question.id}}/new-tag?order_by={{last_key}}&order_direction={{last_order}}&redirect_to=main#{{question.id}}">Add
+                tag</a>
+            {% else %}
+            <a href="/question/{{question.id}}/new-tag?order_by={{last_key}}&order_direction={{last_order}}&redirect_to=main&limit=true#{{question.id}}">Add
+                tag</a>
+            {% endif %}
 
-			</p>
+        </p>
 
-		</div>
+    </div>
 
-		<div class="box-list-buttons">
-			<a class="ask-call-button" href="{{ url_for('question', question_id=question['id']) }}">See the answers</a>
-			<a class="ask-call-button" href="{{ url_for('add_answer', question_id=question['id']) }}">Add your answer</a>
-			<a class="ask-call-button" href="/question/{{question.id}}/new-comment">Add your comment</a>
-		</div>
+    <div class="box-list-buttons">
+        <a class="ask-call-button" href="{{ url_for('question', question_id=question['id']) }}">See the answers</a>
+        <a class="ask-call-button" href="{{ url_for('add_answer', question_id=question['id']) }}">Add your answer</a>
+        <a class="ask-call-button" href="/question/{{question.id}}/new-comment">Add your comment</a>
+    </div>
 
-	</div>
-	{% endfor %}
+</div>
+{% endfor %}
 
 
 {% endblock %}
